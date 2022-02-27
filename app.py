@@ -1,12 +1,12 @@
 import pandas as pd
 import numpy as np
 import plotly.express as px
-from jupyter_dash import JupyterDash
+#from jupyter_dash import JupyterDash
 import os
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-app=JupyterDash(__name__)
+app=dash.Dash(__name__)
 server=app.server
 df = pd.read_csv('https://raw.githubusercontent.com/srinathkr07/IPL-Data-Analysis/master/matches.csv')
 df=df.drop(columns='id')
