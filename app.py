@@ -2,9 +2,12 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import dash
+import dash_auth
 import dash_core_components as dcc
 import dash_html_components as html
+USERNAME_PASSWORD_PAIRS=[['guvi','guvi']]
 app=dash.Dash(__name__)
+auth= dash_auth.BasicAuth(app,USERNAME_PASSWORD_PAIRS)
 server=app.server
 df = pd.read_csv('https://raw.githubusercontent.com/srinathkr07/IPL-Data-Analysis/master/matches.csv')
 df=df.drop(columns='id')
