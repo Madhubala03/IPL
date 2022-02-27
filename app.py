@@ -4,10 +4,14 @@ import plotly.express as px
 !pip install jupyter-dash -q
 from jupyter_dash import JupyterDash
 import dash
+import dash_auth
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
+USERNAME_PASSWORD_PAIRS=[['guvi','guvi']]
 app=JupyterDash(__name__)
+auth= dash_auth.BasicAuth(app,USERNAME_PASSWORD_PAIRS)
+server=app.server
 df = pd.read_csv('https://raw.githubusercontent.com/srinathkr07/IPL-Data-Analysis/master/matches.csv')
 df=df.drop(columns='id')
 df=df.fillna(0)
