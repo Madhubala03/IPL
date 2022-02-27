@@ -6,6 +6,7 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 app=JupyterDash(__name__)
+server=app.server
 df = pd.read_csv('https://raw.githubusercontent.com/srinathkr07/IPL-Data-Analysis/master/matches.csv')
 df=df.drop(columns='id')
 df=df.fillna(0)
