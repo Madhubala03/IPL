@@ -1,8 +1,6 @@
 import pandas as pd
 import numpy as np
 import plotly.express as px
-!pip install jupyter-dash -q
-from jupyter_dash import JupyterDash
 import dash
 import dash_auth
 import dash_core_components as dcc
