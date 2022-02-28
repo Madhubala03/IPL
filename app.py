@@ -94,6 +94,7 @@ def update_graph(value):
   if value== 'Best team based on Number of Wins':
     pie=px.pie(data_frame=df,names='winner',title='Best team based on Number of Wins',hole=0.2,hover_data=['Total_matches_played_by_winner'])
     pie.update_traces(textinfo="label+value",textposition='inside')
+    print('Best team - Mumbai Indians')
     return pie
 
 
