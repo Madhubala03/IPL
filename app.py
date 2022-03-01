@@ -83,48 +83,40 @@ app.layout=html.Div([html.H1(children='IPL Data Analysis', style={'textAlign': '
   ]),html.Div([
   dcc.Graph(
        id='example-graph-1',
-       figure=pie
-   )
-  ])
+      )
+  ]),
+  html.Div(id='text', style={'textAlign': 'center','color': 'black', 'fontSize': 20})
 ])
 @app.callback(
     Output('example-graph-1','figure'),
+    Output('text','children'),
     [Input('based-on','value')])
 def update_graph(value):
   if value== 'Best team based on Number of Wins':
-    pie=px.pie(data_frame=df,names='winner',title='Best team based on Number of Wins',hole=0.2,hover_data=['Total_matches_played_by_winner'])
-    pie.update_traces(textinfo="label+value",textposition='inside')
-    print('Best team - Mumbai Indians')
-    return pie
-
+    data='Best Team-Mumbai Indians-Number of wins-109'
+    return pie,data
 
   elif value== 'Best Player based on Player of the Match':
-    bar=px.bar(df,x='player_of_match',color='player_of_match',title='Best Player based on Player of the Match')
-    return bar
+    data='Best Player-CH Gayle-MPlayer of the Match-21'
+    return bar,data
 
   elif value== 'Best team based on Win by Runs':
-    scat=px.scatter_3d(df,x='winner',y='Loser',z='win_by_runs',color='win_by_runs',size='win_by_runs',title='Best team based on Win by Runs')
-    return scat
+    data='Best Team-Mumbai Indians- Win by Runs -146'
+    return scat,data
 
   elif value== 'Best Team based on Win by Wickets':
-    dfh=df.query("win_by_wickets>0")
-    sun1= px.sunburst(dfh, path=['winner', 'win_by_wickets'],title='Best Team based on Win by Wickets')
-    sun1.update_layout(margin = dict(t=25, l=25, r=25, b=25))
-    sun1.update_traces(textinfo="label+value",maxdepth=1)
-    return sun1
+    data='Best Team-Kolkata Knight Riders-Win by Wickets-56 times'
+    return sun1,data
 
   elif value== 'Luckiest Venue for Each Team':
-    fig=px.bar(df,x='venue',color='winner',title='Luckiest Venue for Each Team',animation_frame='winner',barmode='relative')
-    fig.update_layout(margin=dict(l=100, r=20, t=100, b=200),paper_bgcolor="beige",title={'y':0.9,'x':0.5,'xanchor': 'center','yanchor': 'top'})
-    fig['layout']['updatemenus'][0]['pad']=dict(r= 10, t= 150)
-    fig['layout']['sliders'][0]['pad']=dict(r= 20, t= 200,)
     return fig
 
   elif value== 'Winning probability by Winning Toss':
-    sun= px.sunburst(df, path=['toss_winner', 'winner'],title='Winning probability by Winning Toss')
-    sun.update_layout(margin = dict(t=25, l=25, r=25, b=25))
-    sun.update_traces(textinfo="label+percent parent+value")
-    return sun
+    data='The probability of winning the game after winning toss is above 45% for almost all the teams'
+    return sun,data
+
+if __name__ == '__main__':
+   app.run_server(debug=True)
 
 if __name__ == '__main__':
    app.run_server(debug=True)
