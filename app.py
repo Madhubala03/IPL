@@ -48,75 +48,102 @@ for i in df['winner']:
       break
 df['Total_matches_played_by_winner']=match
 
-pie=px.pie(data_frame=df,names='winner',title='Best team based on Number of Wins',hole=0.2,hover_data=['Total_matches_played_by_winner'])
-pie.update_traces(textinfo="label+value",textposition='inside')
-
-bar=px.bar(df,x='player_of_match',color='player_of_match',title='Best Player based on Player of the Match')
-
-scat=px.scatter_3d(df,x='winner',y='Loser',z='win_by_runs',color='win_by_runs',size='win_by_runs',title='Best team based on Win by Runs')
-
-dfh=df.query("win_by_wickets>0")
-sun1= px.sunburst(dfh, path=['winner', 'win_by_wickets'],title='Best Team based on Win by Wickets')
-sun1.update_layout(margin = dict(t=25, l=25, r=25, b=25))
-sun1.update_traces(textinfo="label+value",maxdepth=1)
-
-fig=px.bar(df,x='venue',color='winner',title='Luckiest Venue for Each Team',animation_frame='winner',barmode='relative')
-fig.update_layout(margin=dict(l=100, r=20, t=100, b=200),paper_bgcolor="beige",title={'y':0.9,'x':0.5,'xanchor': 'center','yanchor': 'top'})
-fig['layout']['updatemenus'][0]['pad']=dict(r= 10, t= 150)
-fig['layout']['sliders'][0]['pad']=dict(r= 20, t= 200,)
-
-sun= px.sunburst(df, path=['toss_winner', 'winner'],title='Winning probability by Winning Toss')
-sun.update_layout(margin = dict(t=25, l=25, r=25, b=25))
-sun.update_traces(textinfo="label+percent parent+value")
-
-app.layout=html.Div([html.H1(children='IPL Data Analysis', style={'textAlign': 'center','color': 'red', 'fontSize': 40}),
-  html.Div([dcc.Dropdown(['Best team based on Number of Wins',
+app.layout=html.Div([html.H1(children='IPL Data Analysis', style={'textAlign': 'center','color': 'red', 'fontSize': 40,'backgroundColor':'powderblue'}),
+html.Div([dcc.Dropdown(['Best team based on Number of Wins',
                          'Best Player based on Player of the Match',
                          'Best team based on Win by Runs',
                          'Best Team based on Win by Wickets',
                          'Luckiest Venue for Each Team',
-                         'Winning probability by Winning Toss'],'Best team based on Number of Wins',id='based-on',
+                         'Winning probability by Winning Toss'],'Best team based on Number of Wins',id='based-on',clearable=False,searchable=False,
                             style = dict(
-                            width = '70%',
-                            verticalAlign = "left"
+                            width = '65%'                           
                             ))
+  ]),html.Br(),
+  html.Div([dcc.Dropdown(['All Seasons',2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,
+                         2018,
+                         2019],'All Seasons',id='year',clearable=False,searchable=False,
+                            style = dict(width = '30%'))
   ]),html.Div([
   dcc.Graph(
        id='example-graph-1',
       )
-  ]),
-  html.Div(id='text', style={'textAlign': 'center','color': 'black', 'fontSize': 20})
+  ])
 ])
 @app.callback(
     Output('example-graph-1','figure'),
-    Output('text','children'),
-    [Input('based-on','value')])
-def update_graph(value):
-  if value== 'Best team based on Number of Wins':
-    data='Best Team-Mumbai Indians-Number of wins-109'
-    return pie,data
+    [Input('based-on','value')],[Input('year','value')])
+def update_graph(bvalue,yvalue):
+  if bvalue== 'Best team based on Number of Wins':
+    if yvalue=='All Seasons':
+      pie=px.pie(data_frame=df,names='winner',title='Best team based on Number of Wins',hole=0.2,hover_data=['Total_matches_played_by_winner'])
+      pie.update_traces(textinfo="label+value",textposition='inside')
+      return pie
+    else:
+      df1 = df[df['season'] == yvalue]
+      pie=px.pie(data_frame=df1,names='winner',title='Best team based on Number of Wins',hole=0.2,hover_data=['Total_matches_played_by_winner'])
+      pie.update_traces(textinfo="label+value",textposition='inside')
+      return pie
 
-  elif value== 'Best Player based on Player of the Match':
-    data='Best Player-CH Gayle-Player of the Match-21 times'
-    return bar,data
+  elif bvalue== 'Best Player based on Player of the Match':
+    if yvalue=='All Seasons':
+      bar=px.bar(df,x='player_of_match',color='player_of_match',title='Best Player based on Player of the Match')
+      bar.update_layout(xaxis={'categoryorder':'total descending'})
+      return bar
+    else:
+      df1 = df[df['season'] == yvalue]
+      bar=px.bar(df1,x='player_of_match',color='player_of_match',title='Best Player based on Player of the Match')
+      bar.update_layout(xaxis={'categoryorder':'total descending'})
+      return bar
 
-  elif value== 'Best team based on Win by Runs':
-    data='Best Team-Mumbai Indians- Win by Runs-146 runs'
-    return scat,data
+  elif bvalue== 'Best team based on Win by Runs':
+    if yvalue=='All Seasons':
+      scat=px.scatter_3d(df,x='winner',y='Loser',z='win_by_runs',color='win_by_runs',size='win_by_runs',title='Best team based on Win by Runs')
+      return scat
+    else:  
+      df1 = df[df['season'] == yvalue]
+      scat=px.scatter_3d(df1,x='winner',y='Loser',z='win_by_runs',color='win_by_runs',size='win_by_runs',title='Best team based on Win by Runs')
+      return scat
 
-  elif value== 'Best Team based on Win by Wickets':
-    data='Best Team-Kolkata Knight Riders-Win by Wickets-56 times'
-    return sun1,data
+  elif bvalue== 'Best Team based on Win by Wickets':
+    if yvalue=='All Seasons':
+      sun1= px.sunburst(df, path=['winner', 'win_by_wickets'],title='Best Team based on Win by Wickets')
+      sun1.update_layout(margin = dict(t=25, l=25, r=25, b=25))
+      sun1.update_traces(textinfo="label+value",maxdepth=1)
+      return sun1
+    else:
+      df1 = df[df['season'] == yvalue]
+      sun1= px.sunburst(df1, path=['winner', 'win_by_wickets'],title='Best Team based on Win by Wickets')
+      sun1.update_layout(margin = dict(t=25, l=25, r=25, b=25))
+      sun1.update_traces(textinfo="label+value",maxdepth=1)
+      return sun1
 
-  elif value== 'Luckiest Venue for Each Team':
-    return fig
+  elif bvalue== 'Luckiest Venue for Each Team':
+    if yvalue=='All Seasons':
+      fig=px.bar(df,x='venue',color='winner',title='Luckiest Venue for Each Team',animation_frame='winner',barmode='relative')
+      fig.update_layout(margin=dict(l=100, r=20, t=100, b=200),paper_bgcolor="beige",title={'y':0.9,'x':0.5,'xanchor': 'center','yanchor': 'top'})
+      fig['layout']['updatemenus'][0]['pad']=dict(r= 10, t= 150)
+      fig['layout']['sliders'][0]['pad']=dict(r= 20, t= 200,)
+      return fig
+    else:
+      df1 = df[df['season'] == yvalue]
+      fig=px.bar(df1,x='venue',color='winner',title='Luckiest Venue for Each Team',animation_frame='winner',barmode='relative')
+      fig.update_layout(margin=dict(l=100, r=20, t=100, b=200),paper_bgcolor="beige",title={'y':0.9,'x':0.5,'xanchor': 'center','yanchor': 'top'})
+      fig['layout']['updatemenus'][0]['pad']=dict(r= 10, t= 150)
+      fig['layout']['sliders'][0]['pad']=dict(r= 20, t= 200,)
+      return fig
 
-  elif value== 'Winning probability by Winning Toss':
-    data='The probability of winning the game after winning toss is above 45% for almost all the teams'
-    return sun,data
-
-if __name__ == '__main__':
-   app.run_server(debug=True)
+  elif bvalue== 'Winning probability by Winning Toss':
+    if yvalue=='All Seasons':
+      sun= px.sunburst(df, path=['toss_winner', 'winner'],title='Winning probability by Winning Toss')
+      sun.update_layout(margin = dict(t=25, l=25, r=25, b=25))
+      sun.update_traces(textinfo="label+percent parent+value")
+      return sun
+    else:
+      df1 = df[df['season'] == yvalue]
+      sun= px.sunburst(df1, path=['toss_winner', 'winner'],title='Winning probability by Winning Toss')
+      sun.update_layout(margin = dict(t=25, l=25, r=25, b=25))
+      sun.update_traces(textinfo="label+percent parent+value")
+      return sun
 
 if __name__ == '__main__':
    app.run_server(debug=True)
