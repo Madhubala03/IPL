@@ -119,14 +119,14 @@ def update_graph(bvalue,yvalue):
 
   elif bvalue== 'Luckiest Venue for Each Team':
     if yvalue=='All Seasons':
-      fig=px.bar(df,x='venue',color='winner',title='Luckiest Venue for Each Team',animation_frame='winner',barmode='relative')
+      fig=px.bar(df,x='venue',color='team1',title='Luckiest Venue for Each Team',animation_frame='team1',barmode='relative')
       fig.update_layout(margin=dict(l=100, r=20, t=100, b=200),paper_bgcolor="beige",title={'y':0.9,'x':0.5,'xanchor': 'center','yanchor': 'top'})
       fig['layout']['updatemenus'][0]['pad']=dict(r= 10, t= 150)
       fig['layout']['sliders'][0]['pad']=dict(r= 20, t= 200,)
       return fig
     else:
       df1 = df[df['season'] == yvalue]
-      fig=px.bar(df1,x='venue',color='winner',title='Luckiest Venue for Each Team',animation_frame='winner',barmode='relative')
+      fig=px.bar(df1,x='venue',color='team1',title='Luckiest Venue for Each Team',animation_frame='team1',barmode='relative')
       fig.update_layout(margin=dict(l=100, r=20, t=100, b=200),paper_bgcolor="beige",title={'y':0.9,'x':0.5,'xanchor': 'center','yanchor': 'top'})
       fig['layout']['updatemenus'][0]['pad']=dict(r= 10, t= 150)
       fig['layout']['sliders'][0]['pad']=dict(r= 20, t= 200,)
