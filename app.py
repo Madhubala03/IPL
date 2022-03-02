@@ -80,7 +80,7 @@ def update_graph(bvalue,yvalue):
       return pie
     else:
       df1 = df[df['season'] == yvalue]
-      pie=px.pie(data_frame=df1,names='winner',title='Best team based on Number of Wins',hole=0.2,hover_data=['Total_matches_played_by_winner'])
+      pie=px.pie(data_frame=df1,names='winner',title='Best team based on Number of Wins',hole=0.2)
       pie.update_traces(textinfo="label+value",textposition='inside')
       return pie
 
