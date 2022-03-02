@@ -97,11 +97,11 @@ def update_graph(value):
     return pie,data
 
   elif value== 'Best Player based on Player of the Match':
-    data='Best Player-CH Gayle-MPlayer of the Match-21'
+    data='Best Player-CH Gayle-Player of the Match-21 times'
     return bar,data
 
   elif value== 'Best team based on Win by Runs':
-    data='Best Team-Mumbai Indians- Win by Runs -146'
+    data='Best Team-Mumbai Indians- Win by Runs-146 runs'
     return scat,data
 
   elif value== 'Best Team based on Win by Wickets':
