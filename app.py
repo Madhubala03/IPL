@@ -18,6 +18,7 @@ df['team1']=df['team1'].replace(mappings)
 df['team2']=df['team2'].replace(mappings)
 df['winner']=df['winner'].replace(mappings)
 df['toss_winner']=df['toss_winner'].replace(mappings)
+#to create a new column 'Loser' 
 loser=[]
 for i in range(756):
   if (df.iloc[i,3])!=(df.iloc[i,9]):
@@ -27,6 +28,7 @@ for i in range(756):
   else:
     loser.append(df.iloc[i,4])
 df['Loser']=loser
+#to find the total matches played by each team over all the seasons
 total={}
 count=0
 for i in df['team1'].unique():
@@ -38,7 +40,8 @@ for i in df['team1'].unique():
         count+=1
   total[i]=count
   count=0
-  match=[]
+#to create a new column of total matches played by the winner over all the seasons
+match=[]
 for i in df['winner']:
   for j,k in total.items():
     if i==j:
@@ -48,7 +51,7 @@ for i in df['winner']:
       break
 df['Total_matches_played_by_winner']=match
 
-app.layout=html.Div([html.H1(children='IPL Data Analysis', style={'textAlign': 'center','color': 'red', 'fontSize': 40,'backgroundColor':'powderblue'}),
+app.layout=html.Div([html.H1(children='IPL Data Analysis', style={'textAlign': 'center','color': 'darkgrey', 'fontSize': 40,'backgroundColor':'black'}),
 html.Div([dcc.Dropdown(['Best team based on Number of Wins',
                          'Best Player based on Player of the Match',
                          'Best team based on Win by Runs',
@@ -106,27 +109,28 @@ def update_graph(bvalue,yvalue):
 
   elif bvalue== 'Best Team based on Win by Wickets':
     if yvalue=='All Seasons':
-      sun1= px.sunburst(df, path=['winner', 'win_by_wickets'],title='Best Team based on Win by Wickets')
-      sun1.update_layout(margin = dict(t=25, l=25, r=25, b=25))
+      df1=df.query("win_by_wickets>0")
+      sun1= px.sunburst(df1, path=['winner', 'win_by_wickets'],title='Best Team based on Win by Wickets')
+      sun1.update_layout(margin = dict(t=100, l=25, r=25, b=25))
       sun1.update_traces(textinfo="label+value",maxdepth=1)
       return sun1
     else:
-      df1 = df[df['season'] == yvalue]
+      df1 = df[(df['season'] == yvalue) & (df["win_by_wickets"]>0)]
       sun1= px.sunburst(df1, path=['winner', 'win_by_wickets'],title='Best Team based on Win by Wickets')
-      sun1.update_layout(margin = dict(t=25, l=25, r=25, b=25))
+      sun1.update_layout(margin = dict(t=100, l=25, r=25, b=25))
       sun1.update_traces(textinfo="label+value",maxdepth=1)
       return sun1
 
   elif bvalue== 'Luckiest Venue for Each Team':
     if yvalue=='All Seasons':
-      fig=px.bar(df,x='venue',color='winner',title='Luckiest Venue for Each Team',animation_frame='team1',barmode='relative')
+      fig=px.bar(df,x='venue',color='winner',title='Luckiest Venue for Each Team',animation_frame='winner',barmode='relative')
       fig.update_layout(margin=dict(l=100, r=20, t=100, b=200),paper_bgcolor="beige",title={'y':0.9,'x':0.5,'xanchor': 'center','yanchor': 'top'})
       fig['layout']['updatemenus'][0]['pad']=dict(r= 10, t= 150)
       fig['layout']['sliders'][0]['pad']=dict(r= 20, t= 200,)
       return fig
     else:
       df1 = df[df['season'] == yvalue]
-      fig=px.bar(df1,x='venue',color='winner',title='Luckiest Venue for Each Team',animation_frame='team1',barmode='relative')
+      fig=px.bar(df1,x='venue',color='winner',title='Luckiest Venue for Each Team',animation_frame='winner',barmode='relative')
       fig.update_layout(margin=dict(l=100, r=20, t=100, b=200),paper_bgcolor="beige",title={'y':0.9,'x':0.5,'xanchor': 'center','yanchor': 'top'})
       fig['layout']['updatemenus'][0]['pad']=dict(r= 10, t= 150)
       fig['layout']['sliders'][0]['pad']=dict(r= 20, t= 200,)
@@ -135,13 +139,13 @@ def update_graph(bvalue,yvalue):
   elif bvalue== 'Winning probability by Winning Toss':
     if yvalue=='All Seasons':
       sun= px.sunburst(df, path=['toss_winner', 'winner'],title='Winning probability by Winning Toss')
-      sun.update_layout(margin = dict(t=25, l=25, r=25, b=25))
+      sun.update_layout(margin = dict(t=100, l=25, r=25, b=25))
       sun.update_traces(textinfo="label+percent parent+value")
       return sun
     else:
       df1 = df[df['season'] == yvalue]
       sun= px.sunburst(df1, path=['toss_winner', 'winner'],title='Winning probability by Winning Toss')
-      sun.update_layout(margin = dict(t=25, l=25, r=25, b=25))
+      sun.update_layout(margin = dict(t=100, l=25, r=25, b=25))
       sun.update_traces(textinfo="label+percent parent+value")
       return sun
 
