@@ -1,4 +1,5 @@
-![App](https://user-images.githubusercontent.com/95579953/156705829-3c7cf648-bd35-4d34-ae8c-3faa22c0109c.jpg)
+![App](https://user-images.githubusercontent.com/95579953/156870084-ddd8ddf7-c2aa-4ce4-9f7b-0248a13e18ec.png)
+
 # IPL Data Analysis and Visualization
 
 The IPL matches over all the seasons has been analysed.
