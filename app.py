@@ -51,7 +51,7 @@ for i in df['winner']:
       break
 df['Total_matches_played_by_winner']=match
 
-app.layout=html.Div([html.H1(children='IPL Data Analysis', style={'textAlign': 'center','color': 'darkgrey', 'fontSize': 40,'backgroundColor':'black'}),
+app.layout=html.Div([html.Div([html.H1(children='IPL Data Analysis', style={'textAlign': 'center','color': 'darkblue', 'fontSize': 40,'backgroundColor':'lightgrey'}),
 html.Div([dcc.Dropdown(['Best team based on Number of Wins',
                          'Best Player based on Player of the Match',
                          'Best team based on Win by Runs',
@@ -59,19 +59,20 @@ html.Div([dcc.Dropdown(['Best team based on Number of Wins',
                          'Luckiest Venue for Each Team',
                          'Winning probability by Winning Toss'],'Best team based on Number of Wins',id='based-on',clearable=False,searchable=False,
                             style = dict(
-                            width = '65%'                           
+                            width = '45%'                           
                             ))
   ]),html.Br(),
   html.Div([dcc.Dropdown(['All Seasons',2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,
                          2018,
                          2019],'All Seasons',id='year',clearable=False,searchable=False,
                             style = dict(width = '30%'))
-  ]),html.Div([
+  ]),html.Br(),html.Br(),html.Div([
   dcc.Graph(
        id='example-graph-1',
       )
   ])
 ])
+],style={'background-image':'url(https://styles.redditmedia.com/t5_2rnjo/styles/communityIcon_sn55eqgnhpw61.jpg?width=256&s=f3d9c42c8ab1f49848451012c87b276d6878b0e2)'})
 @app.callback(
     Output('example-graph-1','figure'),
     [Input('based-on','value')],[Input('year','value')])
