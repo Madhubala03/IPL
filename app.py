@@ -51,8 +51,10 @@ for i in df['winner']:
       break
 df['Total_matches_played_by_winner']=match
 
-app.layout=html.Div([html.Div([html.H1(children='IPL Data Analysis', style={'textAlign': 'center','color': 'darkblue', 'fontSize': 40,'backgroundColor':'lightgrey'}),
-html.Div([dcc.Dropdown(['Best team based on Number of Wins',
+app.layout=html.Div([html.Div([html.H1(children='IPL Data Analysis', style={'textAlign': 'center','color': 'darkblue', 'fontSize': 40,
+'backgroundColor':'white'}),html.Br(),html.Br(),html.Br(),html.Br(),html.Br(),html.Br()],
+style={'background-image':'url(https://styles.redditmedia.com/t5_2rnjo/styles/communityIcon_sn55eqgnhpw61.jpg?width=256&s=f3d9c42c8ab1f49848451012c87b276d6878b0e2)'}),
+html.Br(),html.Div([dcc.Dropdown(['Best team based on Number of Wins',
                          'Best Player based on Player of the Match',
                          'Best team based on Win by Runs',
                          'Best Team based on Win by Wickets',
@@ -66,13 +68,12 @@ html.Div([dcc.Dropdown(['Best team based on Number of Wins',
                          2018,
                          2019],'All Seasons',id='year',clearable=False,searchable=False,
                             style = dict(width = '30%'))
-  ]),html.Br(),html.Br(),html.Div([
+  ]),html.Div([
   dcc.Graph(
        id='example-graph-1',
       )
   ])
 ])
-],style={'background-image':'url(https://styles.redditmedia.com/t5_2rnjo/styles/communityIcon_sn55eqgnhpw61.jpg?width=256&s=f3d9c42c8ab1f49848451012c87b276d6878b0e2)'})
 @app.callback(
     Output('example-graph-1','figure'),
     [Input('based-on','value')],[Input('year','value')])
